@@ -10,6 +10,7 @@
              '("tromey" . "http://tromey.com/elpa/") t)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 ;; (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 ;;                          ("marmalade" . "http://marmalade-repo.org/packages/")
@@ -92,7 +93,7 @@
 ;;
 ;; (require 'yaml-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-;; 
+;;
 ;; Adding this code will make Emacs enter yaml mode whenever you open
 ;; a .yml file
 (add-to-list 'load-path "~/.emacs.d/vendor")
@@ -140,9 +141,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(coffee-tab-width 4)
+ '(cperl-indent-parens-as-block t t)
  '(package-selected-packages
    (quote
-    (multi-web-mode jsx-mode web-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
+    (org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -153,16 +155,24 @@
 (load-theme 'base16-tomorrow-dark t)
 (set-face-attribute 'default nil :height 110)
 
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-(defadvice web-mode-highlight-part (around tweak-jsx activate)
-  (if (equal web-mode-content-type "jsx")
-      (let ((web-mode-enable-part-face nil))
-        ad-do-it)
-    ad-do-it))
-
 (setq-default indent-tabs-mode nil) ; always replace tabs with spaces
 (setq-default tab-width 4) ; set tab width to 4 for all buffers
 (setq js-indent-level 4)
 
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+
 ;; Enable Perl mode for .t files
 (add-to-list 'auto-mode-alist '("\\.t\\'" . perl-mode))
+(global-set-key (kbd "C-x \\") 'align-regexp)
+
+;; I like cperl-mode better
+(fset 'perl-mode 'cperl-mode)
+
+(setq cperl-indent-level 4
+      cperl-close-paren-offset -4
+      cperl-continued-statement-offset 4
+      cperl-indent-parens-as-block t
+      cperl-tab-always-indent t)
+
+;; Delete trailing whitespace on save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
