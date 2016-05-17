@@ -3,6 +3,9 @@
 (require 'pallet)
 (pallet-mode t)
 
+;; Run emacs as a server
+(server-start)
+
 ;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
 ;; to load them.
 ;;
@@ -73,9 +76,6 @@
    (quote
     (flycheck org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
 
-
-(set-frame-font (font-spec :family "Ubuntu Mono" :size 12 :antialias t))
-
 (setq-default indent-tabs-mode nil) ; always replace tabs with spaces
 (setq-default tab-width 2) ; set tab width to 4 for all buffers
 (setq js-indent-level 2)
@@ -134,17 +134,4 @@
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome-stable")
 
-
-;; (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
-;; '(default ((t (:inherit nil :stipple nil :background "#222222" :foreground "#dcdccc" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "Ubuntu Mono"))))
- ;; )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(global-git-commit-mode)

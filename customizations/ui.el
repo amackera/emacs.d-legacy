@@ -30,8 +30,8 @@
 ;; (load-theme 'tomorrow-night-bright t)
 ;; (load-theme 'atom-one-dark t)
 
-;; increase font size for better readability
-;; (set-face-attribute 'default nil :height 140)
+;; Set fonts yay
+(set-face-attribute 'default nil :font "Ubuntu Mono-9")
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height
