@@ -5,6 +5,7 @@
 (source org)
 
 (depends-on "async")
+(depends-on "atom-one-dark-theme")
 (depends-on "aurora-config-mode")
 (depends-on "base16-theme")
 (depends-on "cask")
@@ -33,6 +34,7 @@
 (depends-on "inf-ruby")
 (depends-on "inflections")
 (depends-on "jade-mode")
+(depends-on "js-comint")
 (depends-on "js2-mode")
 (depends-on "json-mode")
 (depends-on "json-reformat")
