@@ -54,6 +54,7 @@
 (depends-on "tagedit")
 (depends-on "transpose-frame")
 (depends-on "tt-mode")
+(depends-on "virtualenvwrapper")
 (depends-on "web-mode")
 (depends-on "with-editor")
 (depends-on "yasnippet")
