@@ -15,8 +15,8 @@
 ;; Highlights matching parenthesis
 (show-paren-mode 1)
 
-;; Highlight current line
-(global-hl-line-mode 1)
+; Delete trailing whitespace on save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Interactive search key bindings. By default, C-s runs
 ;; isearch-forward, so this swaps the bindings.
@@ -42,7 +42,6 @@
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
                                                "backups"))))
 (setq auto-save-default nil)
-
 
 ;; comments
 (defun toggle-comment-on-line ()
@@ -70,4 +69,4 @@
       (ns-get-selection-internal 'CLIPBOARD)
     (quit nil)))
 
-(setq electric-indent-mode nil)
+(setq electric-indent-mode 0)

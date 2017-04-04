@@ -8,3 +8,9 @@ projectile-bookmarks.eld
 projectile.cache
 auto-save-list
 backups
+.cask/
+.cask/*
+tramp
+%backup$~
+.recentf~
+ido.last~

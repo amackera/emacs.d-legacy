@@ -1,10 +1,8 @@
-;; -*- emacs-lisp -*- <15/09/24 16:45:29 /Users/anson/.emacs.d/tramp>
+;; -*- emacs-lisp -*- <17/01/24 12:20:32 /home/amackera/.emacs.d/tramp>
 ;; Tramp connection history.  Don't change this file.
 ;; You can delete it, forcing Tramp to reapply the checks.
 
-((["scp" "vagrant" "vagrant" nil nil]
-  nil)
- (["scp" nil "vagrant" nil nil]
+((["scp" nil "vagrant" nil nil]
   ("locale" "LC_ALL=en_US.utf8")
   ("uname" "Linux 3.13.0-62-generic")
   ("test" "test")
@@ -20,4 +18,49 @@
   ("gid-string" "vagrant")
   ("perl-file-spec" t)
   ("perl-cwd-realpath" t)
-  ("perl" "\\perl")))
+  ("perl" "\\perl"))
+ (["sudo" "root" "valhalla" nil nil]
+  ("uname" "Linux 4.8.13-1-ARCH")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("stat" nil)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("id" "/bin/id")
+  ("gid-string" "root")
+  ("~root" "/root")
+  ("readlink" "\\readlink")
+  ("file-exists" "test -e")
+  ("ls" "/bin/ls --color=never")
+  ("ls-dired" t)
+  ("gid-integer" 0)
+  ("uid-integer" 0)
+  ("git" "\\git"))
+ (["sudo" "root" "localhost" nil nil]
+  ("uname" "Linux 4.8.13-1-ARCH")
+  ("locale" "LC_ALL=en_US.utf8")
+  ("test" "test")
+  ("remote-path"
+   ("/bin" "/usr/bin" "/sbin" "/usr/sbin" "/usr/local/bin" "/usr/local/sbin"))
+  ("remote-shell" "/bin/sh")
+  ("stat" nil)
+  ("perl-file-spec" t)
+  ("perl-cwd-realpath" t)
+  ("perl" "\\perl")
+  ("id" "/bin/id")
+  ("gid-string" "root")
+  ("readlink" "\\readlink")
+  ("gid-integer" 0)
+  ("file-exists" "test -e")
+  ("uid-integer" 0)
+  ("tmpdir" "/tmp")
+  ("touch-t" t)
+  ("touch" "\\touch")
+  ("~root" "/root")
+  ("git" "\\git"))
+ (["scp" nil "sudo" nil nil]
+  nil))

@@ -10,23 +10,44 @@
 ;; Show line numbers
 (global-linum-mode)
 
-;; You can uncomment this to remove the graphical toolbar at the top. After
-;; awhile, you won't need the toolbar.
-;; (when (fboundp 'tool-bar-mode)
-;;   (tool-bar-mode -1))
+;; Highlight current line
+(global-hl-line-mode 1)
 
-;; Don't show native OS scroll bars for buffers because they're redundant
-(when (fboundp 'scroll-bar-mode)
-  (scroll-bar-mode -1))
+;; Highlight current line number
+(hlinum-activate)
+
+;; Remove graphical toolbar, menubar and scroll bar
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; Color Themes
 ;; Read http://batsov.com/articles/2012/02/19/color-theming-in-emacs-reloaded/
 ;; for a great explanation of emacs color themes.
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
 ;; for a more technical explanation.
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(add-to-list 'load-path "~/.emacs.d/themes")
-(load-theme 'base16-tomorrow-dark t)
+
+(load-theme 'monokai t)
+
+
+;; DOOM Theme
+;;; Settings (defaults)
+;; (setq doom-enable-bold t    ; if nil, bolding are universally disabled
+      ;; doom-enable-italic t  ; if nil, italics are universally disabled
+
+      ;; doom-one specific settings
+      ;; doom-one-brighter-modeline nil
+      ;; doom-one-brighter-comments nil
+;)
+;; brighter minibuffer when active
+;; (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+;; Enable nlinum line highlighting
+;; (require 'doom-nlinum)     ; requires nlinum and hl-line-mode
+
+
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+;; (add-to-list 'load-path "~/.emacs.d/themes")
+;; (load-theme 'base16-eighties t)
 ;; (load-theme 'tomorrow-night-bright t)
 ;; (load-theme 'atom-one-dark t)
 
