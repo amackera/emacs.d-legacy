@@ -1,6 +1,5 @@
 (source "elpy" "https://jorgenschaefer.github.io/packages/")
 (source "gnu" "http://elpa.gnu.org/packages/")
-(source "marmalade" "http://marmalade-repo.org/packages/")
 (source "melpa" "http://melpa.milkbox.net/packages/")
 (source "tromey" "http://tromey.com/elpa/")
 (source org)
@@ -58,3 +57,4 @@
 (depends-on "web-mode")
 (depends-on "with-editor")
 (depends-on "yasnippet")
+(depends-on "zenburn-theme")

@@ -27,6 +27,9 @@
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Custom-Themes.html
 ;; for a more technical explanation.
 
+;; Brighten up monokai comment color
+(setq monokai-comments "#919191")
+
 (load-theme 'monokai t)
 
 

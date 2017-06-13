@@ -59,3 +59,5 @@
 
 ;; projectile everywhere!
 (projectile-global-mode)
+
+(windmove-default-keybindings)
