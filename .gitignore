@@ -14,3 +14,4 @@ tramp
 %backup$~
 .recentf~
 ido.last~
+.private.el
