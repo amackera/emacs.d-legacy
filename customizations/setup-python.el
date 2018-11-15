@@ -8,3 +8,7 @@
 
 (require 'virtualenvwrapper)
 (venv-initialize-interactive-shells)
+
+; YAPF -- A Python formatter
+(require 'py-yapf)
+(add-hook 'python-mode-hook 'py-yapf-enable-on-save)

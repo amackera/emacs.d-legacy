@@ -1,32 +1,14 @@
-;; javascript / html
-;;(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
-;;(add-hook 'js-mode-hook 'subword-mode)
-;;(add-hook 'html-mode-hook 'subword-mode)
-;;(setq js-indent-level 2)
-;;(eval-after-load "sgml-mode"
-;;  '(progn
-;;     (require 'tagedit)
-;;     (tagedit-add-paredit-like-keybindings)
-;;     (add-hook 'html-mode-hook (lambda () (tagedit-mode 1)))))
-;;
-
 ;; JavaScript
-(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-(setq web-mode-content-types-alist
-  '(("jsx" . "\\.js[x]?\\'")))
-(setq web-mode-enable-auto-quoting nil)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
 
-;; coffeescript
-(add-to-list 'auto-mode-alist '("\\.coffee.erb$" . coffee-mode))
-(add-hook 'coffee-mode-hook 'subword-mode)
-(add-hook 'coffee-mode-hook 'highlight-indentation-current-column-mode)
-(add-hook 'coffee-mode-hook
-          (defun coffee-mode-newline-and-indent ()
-            (define-key coffee-mode-map "\C-j" 'coffee-newline-and-indent)
-            (setq coffee-cleanup-whitespace nil)))
-(custom-set-variables
- '(coffee-tab-width 2))
+;; (setq web-mode-content-types-alist
+;;       '(("jsx" . "\\.js[x]?\\'")))
+;; (setq web-mode-enable-auto-quoting nil)
+
+;; CSS
+(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 
 ;; http://www.flycheck.org/manual/latest/index.html
 (require 'flycheck)
@@ -53,6 +35,33 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-(setq web-mode-code-indent-offset 2)
-(setq web-mode-markup-indent-offset 2)
-(setq web-mode-attr-indent-offset 2)
+
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-attr-indent-offset 2)
+  (add-to-list 'company-dabbrev-code-modes 'web-mode))
+(add-hook 'web-mode-hook  'my-web-mode-hook)
+
+(defun my-rjsx-mode-hook ()
+  "Hooks for rjsx-mode."
+  (setq js2-basic-offset 2))
+(add-hook 'rjsx-mode-hook 'my-rjsx-mode-hook)
+
+;; Enable prettier
+(require 'prettier-js)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+(add-hook 'rjsx-mode-hook 'prettier-js-mode)
+
+(defun my/use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
