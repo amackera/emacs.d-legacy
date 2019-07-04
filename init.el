@@ -64,13 +64,15 @@
 (load "setup-python.el")
 (load "setup-yaml.el")
 (load "setup-org.el")
-(load "setup-evil.el")
+;; (load "setup-evil.el")
 
 ;; Revert all buffers
 (load "revbufs.el")
 
 ;; Load Circe (IRC) config
 (load "setup-circe.el")
+
+(load "setup-magit.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -88,7 +90,7 @@
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(package-selected-packages
    (quote
-    (evil-org evil-collection evil ## doom py-yapf ein circe rjsx-mode markdown-mode markdown-mode+ json-mode scss-mode all-the-icons async clojure-mode dash git-commit ido-completing-read+ ivy magit-popup package-build pyvenv s with-editor yasnippet prettier-js dockerfile-mode yaml-mode company zenburn-theme virtualenvwrapper monokai-theme doom-themes smooth-scrolling flyspell-correct elpy flycheck org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
+    (auto-complete cask deferred epl f find-file-in-project flx flx-ido ghub goto-chg highlight-indentation hlinum json-reformat json-snatcher memoize pallet pkg-info popup request request-deferred shut-up simple-httpd skewer-mode transpose-frame websocket evil-org evil-collection evil ## doom py-yapf ein circe rjsx-mode markdown-mode markdown-mode+ json-mode scss-mode all-the-icons async clojure-mode dash git-commit ido-completing-read+ ivy magit-popup package-build pyvenv s with-editor yasnippet prettier-js dockerfile-mode yaml-mode company zenburn-theme virtualenvwrapper monokai-theme doom-themes smooth-scrolling flyspell-correct elpy flycheck org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
 
 (global-set-key (kbd "C-x \\") 'align-regexp)
 
@@ -176,3 +178,12 @@ When there is a text selection, act on the region."
             (fill-paragraph nil)) ) )
 
       (put this-command 'stateIsCompact-p (if currentStateIsCompact nil t)) ) ) )
+
+(defun ediff-copy-both-to-C ()
+  (interactive)
+  (ediff-copy-diff ediff-current-difference nil 'C nil
+                   (concat
+                    (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                    (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+(defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+(add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
