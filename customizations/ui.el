@@ -8,7 +8,9 @@
 (menu-bar-mode -1)
 
 ;; Show line numbers
-(global-linum-mode)
+;;(global-linum-mode)
+(global-display-line-numbers-mode)
+
 
 ;; Highlight current line
 (global-hl-line-mode 1)
