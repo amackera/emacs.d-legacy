@@ -15,3 +15,9 @@ tramp
 .recentf~
 ido.last~
 .private.el
+network-security.data
+tramp
+elpa/
+eshell/
+transient/
+%backup%~
