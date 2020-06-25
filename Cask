@@ -49,6 +49,7 @@
 (depends-on "json-reformat")
 (depends-on "json-snatcher")
 (depends-on "jsx-mode")
+(depends-on "jupyter")
 (depends-on "magit")
 (depends-on "magit-popup")
 (depends-on "markdown-mode")

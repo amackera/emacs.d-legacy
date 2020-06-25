@@ -8,12 +8,11 @@
 (menu-bar-mode -1)
 
 ;; Show line numbers
-;;(global-linum-mode)
-(global-display-line-numbers-mode)
-
+;;(global-display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;; Highlight current line
-(global-hl-line-mode 1)
+(global-hl-line-mode nil)
 
 ;; Highlight current line number
 (hlinum-activate)
@@ -31,8 +30,8 @@
 
 ;; Brighten up monokai comment color
 (setq monokai-comments "#919191")
-
 (load-theme 'monokai t)
+;(load-theme 'base16-eighties)
 
 
 ;; DOOM Theme

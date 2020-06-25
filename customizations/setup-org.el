@@ -15,3 +15,8 @@
                              ;; to press C-c q  or fill-paragraph ever again!
                              (visual-line-mode)
                              (org-indent-mode)))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (python . t)
+   (jupyter . t)))
