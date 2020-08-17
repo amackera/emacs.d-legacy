@@ -3,9 +3,16 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-;(package-initialize)
 
-(require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+;;; Code:
+(cond
+ ((string-equal system-type "darwin")
+  (progn
+    (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")))
+ ((string-equal system-type "gnu/linux")
+  (progn
+    (require 'cask "/usr/share/emacs/site-lisp/cask/cask.el"))))
+
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
