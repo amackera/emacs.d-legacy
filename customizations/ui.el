@@ -95,3 +95,12 @@
 ;; no bell
 (setq ring-bell-function 'ignore)
 (setq-default left-fringe-width  10)
+
+;; black magic taken from https://emacs.stackexchange.com/a/338/15177
+(add-to-list 'display-buffer-alist
+         '("^\\*compilation\\*". ((display-buffer-reuse-window)  .
+                                  ((reusable-frames . t)
+                                  (inhibit-same-window . t)))))
+
+;; Better window movement
+(windmove-default-keybindings)

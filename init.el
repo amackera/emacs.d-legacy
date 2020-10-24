@@ -55,15 +55,18 @@
 
 ;; For editing lisps
 (load "elisp-editing.el")
+(load "setup-company.el")
 
 ;; Langauage-specific
 (load "setup-clojure.el")
 (load "setup-js.el")
+(load "setup-typescript.el")
 (load "setup-ruby.el")
 (load "setup-rails.el")
 (load "setup-python.el")
 (load "setup-yaml.el")
 (load "setup-org.el")
+(load "setup-web.el")
 ;; (load "setup-evil.el")
 
 ;; Revert all buffers
@@ -81,6 +84,23 @@
 ;; For eshell
 (load "setup-eshell.el")
 
+
+;; ==========================
+;; Begin use-package conversion
+;; ==========================
+(use-package direnv
+ :config
+ (direnv-mode))
+
+(use-package pipenv
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq
+   pipenv-projectile-after-switch-function
+   #'pipenv-projectile-after-switch-extended))
+
+;; ==========================
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -95,9 +115,10 @@
  '(elpy-modules
    (quote
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(elpy-test-runner (quote elpy-test-pytest-runner))
  '(package-selected-packages
    (quote
-    (jupyter ample-theme pdf-tools auto-complete cask deferred epl f find-file-in-project flx flx-ido ghub goto-chg highlight-indentation hlinum json-reformat json-snatcher memoize pallet pkg-info popup request request-deferred shut-up simple-httpd skewer-mode transpose-frame websocket evil-org evil-collection evil ## doom py-yapf ein circe rjsx-mode markdown-mode markdown-mode+ json-mode scss-mode all-the-icons async clojure-mode dash git-commit ido-completing-read+ ivy magit-popup package-build pyvenv s with-editor yasnippet prettier-js dockerfile-mode yaml-mode company zenburn-theme virtualenvwrapper monokai-theme doom-themes smooth-scrolling flyspell-correct elpy flycheck org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
+    (prettier tide typescript-mode realgud npm-mode jedi pytest direnv use-package pipenv graphql-mode jupyter ample-theme pdf-tools auto-complete cask deferred epl f find-file-in-project flx flx-ido ghub goto-chg highlight-indentation hlinum json-reformat json-snatcher memoize pallet pkg-info popup request request-deferred shut-up simple-httpd skewer-mode transpose-frame websocket evil-org evil-collection evil ## doom py-yapf ein circe rjsx-mode markdown-mode markdown-mode+ json-mode scss-mode all-the-icons async clojure-mode dash git-commit ido-completing-read+ ivy magit-popup package-build pyvenv s with-editor yasnippet prettier-js dockerfile-mode yaml-mode company zenburn-theme virtualenvwrapper monokai-theme doom-themes smooth-scrolling flyspell-correct elpy flycheck org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
 
 (global-set-key (kbd "C-x \\") 'align-regexp)
 
@@ -138,7 +159,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-; '(default ((t (:inherit nil :stipple nil :background "#272822" :foreground "#F8F8F2" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 95 :width normal :family "Source Code Pro"))))
  )
 
 (setq gud-pdb-command-name "python -m pdb")
