@@ -125,7 +125,10 @@
  '(elpy-test-runner (quote elpy-test-pytest-runner))
  '(package-selected-packages
    (quote
-    (prettier tide typescript-mode realgud npm-mode jedi pytest direnv use-package pipenv graphql-mode jupyter ample-theme pdf-tools auto-complete cask deferred epl f find-file-in-project flx flx-ido ghub goto-chg highlight-indentation hlinum json-reformat json-snatcher memoize pallet pkg-info popup request request-deferred shut-up simple-httpd skewer-mode transpose-frame websocket evil-org evil-collection evil ## doom py-yapf ein circe rjsx-mode markdown-mode markdown-mode+ json-mode scss-mode all-the-icons async clojure-mode dash git-commit ido-completing-read+ ivy magit-popup package-build pyvenv s with-editor yasnippet prettier-js dockerfile-mode yaml-mode company zenburn-theme virtualenvwrapper monokai-theme doom-themes smooth-scrolling flyspell-correct elpy flycheck org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider))))
+    (prettier tide typescript-mode realgud npm-mode jedi pytest direnv use-package pipenv graphql-mode jupyter ample-theme pdf-tools auto-complete cask deferred epl f find-file-in-project flx flx-ido ghub goto-chg highlight-indentation hlinum json-reformat json-snatcher memoize pallet pkg-info popup request request-deferred shut-up simple-httpd skewer-mode transpose-frame websocket evil-org evil-collection evil ## doom py-yapf ein circe rjsx-mode markdown-mode markdown-mode+ json-mode scss-mode all-the-icons async clojure-mode dash git-commit ido-completing-read+ ivy magit-popup package-build pyvenv s with-editor yasnippet prettier-js dockerfile-mode yaml-mode company zenburn-theme virtualenvwrapper monokai-theme doom-themes smooth-scrolling flyspell-correct elpy flycheck org aurora-config-mode web-mode js2-mode tt-mode multi-web-mode jsx-mode base16-theme tagedit smex rainbow-delimiters projectile paredit magit ido-ubiquitous exec-path-from-shell clojure-mode-extra-font-locking cider)))
+ '(safe-local-variable-values
+   (quote
+    ((cider-clojure-cli-global-options . "-A:env/test")))))
 
 (global-set-key (kbd "C-x \\") 'align-regexp)
 
@@ -157,8 +160,8 @@
 
 ;; (setq browse-url-browser-function 'browse-url-generic
 ;;       browse-url-generic-program 'browse-url-default-macosx-browser)
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome-stable")
+;; (setq browse-url-browser-function 'browse-url-generic
+;;       browse-url-generic-program "google-chrome-stable")
 
 (global-git-commit-mode)
 (custom-set-faces
