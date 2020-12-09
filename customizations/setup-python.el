@@ -1,3 +1,5 @@
+(pyenv-mode)
+
 (elpy-enable)
 
 (add-hook 'python-mode-hook

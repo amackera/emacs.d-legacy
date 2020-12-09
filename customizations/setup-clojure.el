@@ -54,7 +54,7 @@
 ;; Use clojure mode for other extensions
 (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
 (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
-(add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.cljs.*$" . clojurescript-mode))
 (add-to-list 'auto-mode-alist '("lein-env" . enh-ruby-mode))
 
 
@@ -83,3 +83,6 @@
 ;;      (define-key clojure-mode-map (kbd "C-M-r") 'cider-refresh)
 ;;      (define-key clojure-mode-map (kbd "C-c u") 'cider-user-ns)
 ;;      (define-key cider-mode-map (kbd "C-c u") 'cider-user-ns)))
+
+;; Can't live without CIDER everywhere
+(global-set-key (kbd "C-c s") #'cider-selector)

@@ -56,7 +56,7 @@
 ;; (load-theme 'atom-one-dark t)
 
 ;; Set fonts yay
-(set-face-attribute 'default nil :height 90)
+(set-face-attribute 'default nil :height 100)
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height

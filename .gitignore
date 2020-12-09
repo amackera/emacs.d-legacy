@@ -18,7 +18,9 @@ ido.last~
 network-security.data
 tramp
 elpa/
+elpy/
 eshell/
 transient/
 %backup%~
 network-security.data
+ac-comphist.dat
