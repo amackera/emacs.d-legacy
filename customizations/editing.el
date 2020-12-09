@@ -55,7 +55,6 @@
 
 ;; yay rainbows!
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-;; (global-rainbow-delimiters-mode t)
 
 ;; use 2 spaces for tabs
 (defun die-tabs ()

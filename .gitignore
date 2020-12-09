@@ -17,6 +17,7 @@ ido.last~
 .private.el
 network-security.data
 tramp
+tramp/
 elpa/
 elpy/
 eshell/
