@@ -79,6 +79,7 @@
 (depends-on "prettier-js")
 (depends-on "projectile")
 (depends-on "py-yapf")
+(depends-on "pyenv-mode")
 (depends-on "pytest")
 (depends-on "pyvenv")
 (depends-on "queue")
