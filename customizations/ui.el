@@ -31,7 +31,7 @@
 ;; Brighten up monokai comment color
 (setq monokai-comments "#919191")
 ;; (load-theme 'monokai t)
-(load-theme 'gruvbox-dark-soft t)
+(load-theme 'kaolin-galaxy t)
 ;(load-theme 'base16-eighties)
 
 
