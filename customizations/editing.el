@@ -68,7 +68,7 @@
 (defun ns-get-pasteboard ()
   "Returns the value of the pasteboard, or nil for unsupported formats."
   (condition-case nil
-      (ns-get-selection-internal 'CLIPBOARD)
+      (ns-get-seletcion-internal 'CLIPBOARD)
     (quit nil)))
 
 (setq electric-indent-mode 0)
