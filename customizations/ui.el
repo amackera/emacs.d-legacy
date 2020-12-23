@@ -32,7 +32,8 @@
 (setq monokai-comments "#919191")
 ;; (load-theme 'monokai t)
 (load-theme 'kaolin-galaxy t)
-;(load-theme 'base16-eighties)
+;;(load-theme 'base16-eighties)
+
 
 
 ;; DOOM Theme
@@ -57,7 +58,7 @@
 ;; (load-theme 'atom-one-dark t)
 
 ;; Set fonts yay
-;; (set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :font "Fira Code" :height 100)
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height
@@ -105,3 +106,6 @@
 
 ;; Better window movement
 (windmove-default-keybindings)
+
+;; Enable ligatures with figma-mode
+(global-fira-code-mode)

@@ -35,6 +35,7 @@
 (depends-on "exec-path-from-shell")
 (depends-on "f")
 (depends-on "find-file-in-project")
+(depends-on "fira-code-mode")
 (depends-on "flx")
 (depends-on "flx-ido")
 (depends-on "flycheck")
