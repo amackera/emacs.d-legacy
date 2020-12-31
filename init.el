@@ -91,6 +91,9 @@
 ;; For eshell
 (load "setup-eshell.el")
 
+;; Hipster screenshots: https://github.com/tecosaur/screenshot
+(load "screenshot.el")
+
 
 ;; ==========================
 ;; Begin use-package conversion
