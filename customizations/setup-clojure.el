@@ -6,7 +6,8 @@
 (add-hook 'clojure-mode-hook 'enable-paredit-mode)
 
 ;; Enable cider
-;(add-hock 'clojure-mode-hook #'cider-mode)
+                                        ;(add-hock 'clojure-mode-hook #'cider-mode)]
+(require 'flycheck-clj-kondo)
 
 ;; This is useful for working with camel-case tokens, like names of
 ;; Java classes (e.g. JavaClassName)

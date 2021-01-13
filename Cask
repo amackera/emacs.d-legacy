@@ -41,6 +41,7 @@
 (depends-on "flx")
 (depends-on "flx-ido")
 (depends-on "flycheck")
+(depends-on "flycheck-clj-kondo")
 (depends-on "flyspell-correct")
 (depends-on "ghub")
 (depends-on "git-commit")
