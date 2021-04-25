@@ -124,7 +124,16 @@
  '(elpy-test-runner 'elpy-test-pytest-runner)
  '(package-selected-packages
    '(flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi ido-completing-read+ hlinum graphql-mode ghub flyspell-correct flx-ido find-file-in-project exec-path-from-shell evil-org evil-collection emojify elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
- '(safe-local-variable-values '((cider-clojure-cli-global-options . "-A:env/test"))))
+ '(safe-local-variable-values
+   '((cider-shadow-watched-builds "frontend")
+     (cider-shadow-default-options . "admin")
+     (cider-shadow-watched-builds "admin" "customer")
+     (cider-preferred-build-tool . clojure-cli)
+     (cider-clojure-cli-aliases . "-A:test")
+     (cider-clojure-cli-global-options . "-A:test")
+     (cider-clojure-cli-global-options . "-A:env/test")
+     (cider-default-cljs-repl . shadow)
+     (cider-preferred-build-tool . shadow-cljs))))
 
 (global-set-key (kbd "C-x \\") 'align-regexp)
 
@@ -136,14 +145,6 @@
       '(:eval (format " Projectile[%s(%s)]"
                       (projectile-project-name))))
 
-(global-git-commit-mode)
-
+;; (global-git-commit-mode)
 ;; This reverts files automatically
-(global-auto-revert-mode t)
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; (global-auto-revert-mode t)
