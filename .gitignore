@@ -25,3 +25,4 @@ transient/
 %backup%~
 network-security.data
 ac-comphist.dat
+*.gpg

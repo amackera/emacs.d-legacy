@@ -8,7 +8,7 @@
 (cond
  ((string-equal system-type "darwin")
   (progn
-    (require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")))
+    (require 'cask "/opt/homebrew/share/emacs/site-lisp/cask/cask.el")))
  ((string-equal system-type "gnu/linux")
   (progn
     (require 'cask "/usr/share/emacs/site-lisp/cask/cask.el"))))
@@ -85,7 +85,8 @@
 (load "setup-magit.el")
 
 ;; For email
-;(load "setup-mu4e.el")
+                                        ;(load "setup-mu4e.el")
+(load "~/.emacs.d/mu4e/config.el")
 ;(pdf-loader-install)
 
 ;; For eshell
@@ -123,7 +124,7 @@
    '(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults))
  '(elpy-test-runner 'elpy-test-pytest-runner)
  '(package-selected-packages
-   '(flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi ido-completing-read+ hlinum graphql-mode ghub flyspell-correct flx-ido find-file-in-project exec-path-from-shell evil-org evil-collection emojify elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
+   '(org-mime flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi ido-completing-read+ hlinum graphql-mode ghub flyspell-correct flx-ido find-file-in-project exec-path-from-shell evil-org evil-collection emojify elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
  '(safe-local-variable-values
    '((cider-shadow-watched-builds "frontend")
      (cider-shadow-default-options . "admin")
@@ -145,6 +146,42 @@
       '(:eval (format " Projectile[%s(%s)]"
                       (projectile-project-name))))
 
-;; (global-git-commit-mode)
 ;; This reverts files automatically
 ;; (global-auto-revert-mode t)
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; Similar to C-x C-e, but sends to REBL
+(defun rebl-eval-last-sexp ()
+  (interactive)
+  (let* ((bounds (cider-last-sexp 'bounds))
+         (s (cider-last-sexp))
+         (reblized (concat "(cognitect.rebl/inspect " s ")")))
+    (cider-interactive-eval reblized nil bounds (cider--nrepl-print-request-map))))
+
+;; Similar to C-M-x, but sends to REBL
+(defun rebl-eval-defun-at-point ()
+  (interactive)
+  (let* ((bounds (cider-defun-at-point 'bounds))
+         (s (cider-defun-at-point))
+         (reblized (concat "(cognitect.rebl/inspect " s ")")))
+    (cider-interactive-eval reblized nil bounds (cider--nrepl-print-request-map))))
+
+;; C-S-x send defun to rebl
+;; C-x C-r send last sexp to rebl (Normally bound to "find-file-read-only"... Who actually uses that though?)
+(add-hook 'cider-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-S-x") #'rebl-eval-defun-at-point)
+            (local-set-key (kbd "C-x C-r") #'rebl-eval-last-sexp)))
+
+
+(require 'epa)
+(epa-file-enable)
+;; Pin entry on minibuffer
+(setq epa-pinentry-mode 'loopback)
+(pinentry-start)
