@@ -1,0 +1,3 @@
+[submodule "mu4e/mu4e-thread-folding"]
+	path = mu4e/mu4e-thread-folding
+	url = git@github.com:amackera/mu4e-thread-folding.git
