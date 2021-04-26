@@ -10,7 +10,6 @@
       epa-pinentry-mode 'ask
       ;; mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
       mu4e-view-prefer-html t
-      mu4e-update-interval 180
       mu4e-headers-auto-update t
       mu4e-compose-signature-auto-include nil
       mu4e-compose-format-flowed t)
