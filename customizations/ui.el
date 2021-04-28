@@ -58,7 +58,7 @@
 ;; (load-theme 'atom-one-dark t)
 
 ;; Set fonts yay
-(set-face-attribute 'default nil :font "Fira Code" :height 90 :weight 'semi-bold)
+
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height
@@ -114,8 +114,10 @@
 (cond
  ((string-equal system-type "darwin")
   (progn
-    (mac-auto-operator-composition-mode)))
+    (mac-auto-operator-composition-mode)
+    (set-face-attribute 'default nil :font "Fira Code" :height 120 :weight 'normal)))
  ((string-equal system-type "gnu/linux")
   (progn
     (global-fira-code-mode)
-    (setq x-super-keysym 'meta))))
+    (setq x-super-keysym 'meta)
+    (set-face-attribute 'default nil :font "Fira Code" :height 90 :weight 'semi-bold))))
