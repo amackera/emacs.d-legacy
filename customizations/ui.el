@@ -58,7 +58,7 @@
 ;; (load-theme 'atom-one-dark t)
 
 ;; Set fonts yay
-(set-face-attribute 'default nil :font "Fira Code" :height 120)
+(set-face-attribute 'default nil :font "Fira Code" :height 90 :weight 'semi-bold)
 
 ;; Uncomment the lines below by removing semicolons and play with the
 ;; values in order to set the width (in characters wide) and height
@@ -107,7 +107,9 @@
 ;; Better window movement
 (windmove-default-keybindings)
 
-;; Enable ligatures with figma-mode
+;; Split windows vertically instead of horizontally
+(setq split-width-threshold 0)
+(setq split-height-threshold nil)
 
 (cond
  ((string-equal system-type "darwin")
@@ -115,4 +117,5 @@
     (mac-auto-operator-composition-mode)))
  ((string-equal system-type "gnu/linux")
   (progn
-    (global-fira-code-mode))))
+    (global-fira-code-mode)
+    (setq x-super-keysym 'meta))))

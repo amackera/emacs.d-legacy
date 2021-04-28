@@ -66,6 +66,7 @@
 (depends-on "magit-popup")
 (depends-on "markdown-mode")
 (depends-on "memoize")
+(depends-on "memory-usage")
 (depends-on "monokai-theme")
 (depends-on "multi-web-mode")
 (depends-on "npm-mode")
