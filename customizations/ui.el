@@ -108,4 +108,11 @@
 (windmove-default-keybindings)
 
 ;; Enable ligatures with figma-mode
-(global-fira-code-mode)
+
+(cond
+ ((string-equal system-type "darwin")
+  (progn
+    (mac-auto-operator-composition-mode)))
+ ((string-equal system-type "gnu/linux")
+  (progn
+    (global-fira-code-mode))))
