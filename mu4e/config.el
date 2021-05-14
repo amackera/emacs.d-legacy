@@ -25,7 +25,7 @@
   (imagemagick-register-types))
 
 ;; every new email composition gets its own frame!
-(setq mu4e-compose-in-new-frame t)
+;; (setq mu4e-compose-in-new-frame t)
 
 ;; don't save message to Sent Messages, IMAP takes care of this
 (setq mu4e-sent-messages-behavior 'delete)
@@ -57,8 +57,7 @@
                 (:human-date . 10) ;; alternatively, use :date
 		(:flags . 6)
 		(:from . 22)
-		(:subject . 60)
-		(:size . 7)))))
+		(:subject . nil)))))
 
 ;; if you use date instead of human-date in the above, use this setting
 ;; give me ISO(ish) format date-time stamps in the header list
