@@ -9,9 +9,8 @@
 (setq mu4e-get-mail-command (format "INSIDE_EMACS=%s mbsync -c ~/.emacs.d/mu4e/.mbsyncrc -a" emacs-version)
       epa-pinentry-mode 'ask
       ;; mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
-      mu4e-view-prefer-html t
+      mu4e-view-prefer-html nil
       mu4e-headers-auto-update t
-      mu4e-compose-signature-auto-include nil
       mu4e-compose-format-flowed t)
 
 ;; to view selected message in the browser, no signin, just html mail
@@ -23,9 +22,6 @@
 ;; use imagemagick, if available
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
-
-;; every new email composition gets its own frame!
-(setq mu4e-compose-in-new-frame t)
 
 ;; don't save message to Sent Messages, IMAP takes care of this
 (setq mu4e-sent-messages-behavior 'delete)
@@ -54,7 +50,7 @@
 	(interactive)
 	(setq mu4e-headers-fields
 	      `((:empty . 2)
-                (:human-date . 10) ;; alternatively, use :date
+                (:human-date . 14) ;; alternatively, use :date
 		(:flags . 6)
 		(:from . 22)
 		(:subject . 60)
@@ -64,14 +60,22 @@
 ;; give me ISO(ish) format date-time stamps in the header list
 ;(setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
 
-;; spell check
-(add-hook 'mu4e-compose-mode-hook
-    (defun my-do-compose-stuff ()
-       "My settings for message composition."
-       (visual-line-mode)
-       (org-mu4e-compose-org-mode)
-           (use-hard-newlines -1)
-       (flyspell-mode)))
+(require 'message)
+(setq mu4e-compose-signature-auto-include nil)
+
+(defun message-insert-signature-at-point ()
+  "Insert signature at point."
+  (interactive)
+  (require 'message)
+  (save-restriction
+    (narrow-to-region (point) (point))
+    (message-insert-signature)))
+
+(global-set-key (kbd "C-i") `message-insert-signature-at-point)
+
+;; ;; Gmail style citation
+;; (setq message-citation-line-format "On %b %d, %Y at %R, %f wrote:\n")
+;; (setq message-citation-line-function 'message-insert-formatted-citation-line)
 
 (require 'smtpmail)
 
@@ -89,10 +93,10 @@
 (setq message-kill-buffer-on-exit t)
 (setq mu4e-compose-dont-reply-to-self t)
 
-(require 'org-mu4e)
+;; (require 'org-mu4e)
 
 ;; convert org mode to HTML automatically
-(setq org-mu4e-convert-to-html t)
+;; (setq org-mu4e-convert-to-html t)
 
 ;;from vxlabs config
 ;; show full addresses in view message (instead of just names)

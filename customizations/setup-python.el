@@ -1,5 +1,5 @@
 (require 'pyenv-mode)
-(pyenv-mode)
+
 
 (elpy-enable)
 
@@ -8,7 +8,8 @@
        (setq tab-width 4)
        (setq python-shift-right 4)
        (setq python-shift-left 4)
-       (setq python-indent 4)))
+       (setq python-indent 4)
+       (pyenv-mode)))
 
 (require 'virtualenvwrapper)
 (venv-initialize-interactive-shells)
