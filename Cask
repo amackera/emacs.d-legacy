@@ -71,6 +71,7 @@
 (depends-on "multi-web-mode")
 (depends-on "npm-mode")
 (depends-on "org-mime")
+(depends-on "org-msg")
 (depends-on "package-build")
 (depends-on "pallet")
 (depends-on "paredit")

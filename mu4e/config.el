@@ -3,6 +3,9 @@
 ;; (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e/")
 (require 'mu4e)
 
+;; Set mu4e as default mail program
+(setq mail-user-agent 'mu4e-user-agent)
+
 (setq mu4e-maildir (expand-file-name "~/Maildir"))
 
 ; get mail
@@ -10,8 +13,15 @@
       epa-pinentry-mode 'ask
       ;; mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
       mu4e-view-prefer-html nil
+      mu4e-compose-signature-auto-include nil
+      mu4e-update-interval 300
       mu4e-headers-auto-update t
       mu4e-compose-format-flowed t)
+
+(setq mm-discouraged-alternatives '("text/html" "text/richtext"))
+;; (with-eval-after-load "mm-decode"
+;;  (add-to-list 'mm-discouraged-alternatives "text/html")
+;;  (add-to-list 'mm-discouraged-alternatives "text/richtext"))
 
 ;; to view selected message in the browser, no signin, just html mail
 (add-to-list 'mu4e-view-actions
@@ -44,6 +54,24 @@
                          :shortname ""
                          :function (lambda (msg) "  "))))
 
+(require 'org-msg)
+(setq org-msg-options "html-postamble:nil H:5 num:nil ^:{} toc:nil author:nil email:nil \\n:t"
+      org-msg-startup "hidestars indent inlineimages"
+      ;; org-msg-greeting-fmt "\nHi *%s*,\n\n"
+      ;; org-msg-recipient-names '(("jeremy.compostella@gmail.com" . "Jérémy"))
+      org-msg-greeting-name-limit 3
+      org-msg-default-alternatives '((new		. (text html))
+				     (reply-to-html	. (text html))
+				     (reply-to-text	. (text)))
+      org-msg-convert-citation t
+      org-msg-signature "
+
+ #+begin_signature
+ --
+ *Anson MacKeracher*
+ CTO - https://legalmate.co
+ #+end_signature")
+
 ;; from https://www.reddit.com/r/emacs/comments/bfsck6/mu4e_for_dummies/elgoumx
 (add-hook 'mu4e-headers-mode-hook
       (defun my/mu4e-change-headers ()
@@ -53,25 +81,34 @@
                 (:human-date . 14) ;; alternatively, use :date
 		(:flags . 6)
 		(:from . 22)
-		(:subject . 60)
-		(:size . 7)))))
+		(:subject . nil)))))
+
+(add-hook 'mu4e-compose-mode-hook
+    (defun my-do-compose-stuff ()
+       "My settings for message composition."
+       (visual-line-mode)
+       (use-hard-newlines -1)
+       (flyspell-mode)))
+
+(add-hook 'mu4e-compose-pre-hook
+          (defun me-pre-compose-stuff ()
+            (org-msg-mode)))
 
 ;; if you use date instead of human-date in the above, use this setting
 ;; give me ISO(ish) format date-time stamps in the header list
 ;(setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
 
-(require 'message)
-(setq mu4e-compose-signature-auto-include nil)
+;(require 'message)
 
-(defun message-insert-signature-at-point ()
-  "Insert signature at point."
-  (interactive)
-  (require 'message)
-  (save-restriction
-    (narrow-to-region (point) (point))
-    (message-insert-signature)))
+;; (defun message-insert-signature-at-point ()
+;;   "Insert signature at point."
+;;   (interactive)
+;;   (require 'message)
+;;   (save-restriction
+;;     (narrow-to-region (point) (point))
+;;     (message-insert-signature)))
 
-(global-set-key (kbd "C-i") `message-insert-signature-at-point)
+;; (global-set-key (kbd "C-i") `message-insert-signature-at-point)
 
 ;; ;; Gmail style citation
 ;; (setq message-citation-line-format "On %b %d, %Y at %R, %f wrote:\n")
