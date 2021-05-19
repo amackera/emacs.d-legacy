@@ -86,6 +86,7 @@
 (depends-on "npm-mode")
 (depends-on "nvm" "0.2")
 (depends-on "org-mime")
+(depends-on "org-msg")
 (depends-on "package-build")
 (depends-on "pallet")
 (depends-on "paredit")
