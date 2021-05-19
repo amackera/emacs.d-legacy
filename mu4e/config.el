@@ -11,6 +11,9 @@
       ;; mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
       mu4e-view-prefer-html t
       mu4e-headers-auto-update t
+      mu4e-update-interval 60
+      mu4e-split-view 'vertical
+      mu4e-headers-visible-columns 100
       mu4e-compose-signature-auto-include nil
       mu4e-compose-format-flowed t)
 
