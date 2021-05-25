@@ -11,8 +11,10 @@
 ; get mail
 (setq mu4e-get-mail-command (format "INSIDE_EMACS=%s mbsync -c ~/.emacs.d/mu4e/.mbsyncrc -a" emacs-version)
       epa-pinentry-mode 'ask
-      ;; mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
-      mu4e-view-prefer-html nil
+      mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
+      mu4e-view-prefer-html t
+      mu4e-split-view 'vertical
+      mu4e-headers-visible-columns 100
       mu4e-compose-signature-auto-include nil
       mu4e-update-interval 300
       mu4e-headers-auto-update t
