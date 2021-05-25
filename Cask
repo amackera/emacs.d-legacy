@@ -62,6 +62,7 @@
 (depends-on "highlight-indentation")
 (depends-on "hlinum")
 (depends-on "ht")
+(depends-on "htmlize" "1.54")
 (depends-on "ido-completing-read+")
 (depends-on "iter2" "0.9")
 (depends-on "ivy")

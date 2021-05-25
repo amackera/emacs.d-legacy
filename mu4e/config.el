@@ -13,8 +13,8 @@
       epa-pinentry-mode 'ask
       mu4e-html2text-command "w3m -T text/html" ;;using the default mu4e-shr2text
       mu4e-view-prefer-html t
-      mu4e-split-view 'vertical
-      mu4e-headers-visible-columns 100
+      ;; mu4e-split-view 'vertical
+      ;; mu4e-headers-visible-columns 100
       mu4e-compose-signature-auto-include nil
       mu4e-update-interval 300
       mu4e-headers-auto-update t
@@ -83,10 +83,19 @@
 	(interactive)
 	(setq mu4e-headers-fields
 	      `((:empty . 2)
-                (:human-date . 14) ;; alternatively, use :date
+                (:human-date . 12) ;; alternatively, use :date
 		(:flags . 6)
+                (:mailing-list . 10)
 		(:from . 22)
 		(:subject . nil)))))
+
+;; Thread folding keybindings
+(define-key mu4e-headers-mode-map (kbd "<tab>")     'mu4e-headers-toggle-at-point)
+(define-key mu4e-headers-mode-map (kbd "<left>")    'mu4e-headers-fold-at-point)
+(define-key mu4e-headers-mode-map (kbd "<S-left>")  'mu4e-headers-fold-all)
+(define-key mu4e-headers-mode-map (kbd "<right>")   'mu4e-headers-unfold-at-point)
+(define-key mu4e-headers-mode-map (kbd "<S-right>") 'mu4e-headers-unfold-all)
+
 ;; if you use date instead of human-date in the above, use this setting
 ;; give me ISO(ish) format date-time stamps in the header list
 ;(setq mu4e-headers-date-format "%Y-%m-%d %H:%M")
