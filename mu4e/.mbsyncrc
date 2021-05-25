@@ -9,8 +9,8 @@ PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.emacs.d/mu4e/.mbsyncpass-per
 AuthMechs LOGIN
 SSLType IMAPS
 SSLVersions TLSv1.2
-#CertificateFile /opt/homebrew/etc/openssl@1.1/cert.pem
-Certificatefile /etc/ssl/certs/ca-certificates.crt
+CertificateFile /opt/homebrew/etc/openssl@1.1/cert.pem
+# Certificatefile /etc/ssl/certs/ca-certificates.crt
 
 # THEN WE SPECIFY THE LOCAL AND REMOTE STORAGE
 # - THE REMOTE STORAGE IS WHERE WE GET THE MAIL FROM (E.G., THE
@@ -99,8 +99,8 @@ PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.emacs.d/mu4e/.mbsyncpass-leg
 AuthMechs LOGIN
 SSLType IMAPS
 SSLVersions TLSv1.2
-#CertificateFile /opt/homebrew/etc/openssl@1.1/cert.pem
-Certificatefile /etc/ssl/certs/ca-certificates.crt
+CertificateFile /opt/homebrew/etc/openssl@1.1/cert.pem
+#Certificatefile /etc/ssl/certs/ca-certificates.crt
 
 # THEN WE SPECIFY THE LOCAL AND REMOTE STORAGE
 # - THE REMOTE STORAGE IS WHERE WE GET THE MAIL FROM (E.G., THE
