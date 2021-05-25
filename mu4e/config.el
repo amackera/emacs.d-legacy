@@ -33,12 +33,9 @@
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
 
-<<<<<<< HEAD
-=======
 ;; every new email composition gets its own frame!
 ;; (setq mu4e-compose-in-new-frame t)
 
->>>>>>> d02f27fd13e795b40f0ca70d5968b3e8bcffa795
 ;; don't save message to Sent Messages, IMAP takes care of this
 (setq mu4e-sent-messages-behavior 'delete)
 
