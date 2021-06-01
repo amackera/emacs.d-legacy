@@ -74,7 +74,7 @@
  #+begin_signature
  --
  *Anson MacKeracher*
- CTO - https://legalmate.co
+ Co-Founder & CTO - https://legalmate.co
  #+end_signature")
 
 ;; from https://www.reddit.com/r/emacs/comments/bfsck6/mu4e_for_dummies/elgoumx

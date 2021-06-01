@@ -24,3 +24,6 @@
 (setq org-capture-templates
       '(("t" "todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
          "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
+
+(setq org-todo-keywords
+      '((sequence "TODO" "WIP" "|" "DONE")))
