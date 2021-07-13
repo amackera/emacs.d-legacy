@@ -11,7 +11,8 @@ This is my Emacs config. It's mostly based around using Emacs for Clojure progra
 3. `brew install cask`
 4. `cd .emacs.d`
 5. `cask install`
-6. Open Emacs
+6. `brew install ispell`
+7. Open Emacs
 
 ### ArchLinux
 
