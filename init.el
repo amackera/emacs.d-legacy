@@ -20,20 +20,6 @@
 ;; Run emacs as a server
 (server-start)
 
-;; Place downloaded elisp files in ~/.emacs.d/vendor. You'll then be able
-;; to load them.
-;;
-;; For example, if you download yaml-mode.el to ~/.emacs.d/vendor,
-;; then you can add the following code to this file:
-;;
-;; (require 'yaml-mode)
-;; (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-;;
-;; Adding this code will make Emacs enter yaml mode whenever you open
-;; a .yml file
-(add-to-list 'load-path "~/.emacs.d/vendor")
-
-
 ;;;;
 ;; Customization
 ;;;;
@@ -68,8 +54,8 @@
 (load "setup-clojure.el")
 (load "setup-js.el")
 (load "setup-typescript.el")
-(load "setup-ruby.el")
-(load "setup-rails.el")
+;; (load "setup-ruby.el")
+;; (load "setup-rails.el")
 (load "setup-python.el")
 (load "setup-yaml.el")
 (load "setup-org.el")
@@ -78,24 +64,22 @@
 ;; (load "setup-evil.el")
 
 ;; Revert all buffers
-(load "revbufs.el")
+;; (load "revbufs.el")
 
 ;; Load Circe (IRC) config
-(load "setup-circe.el")
+;; (load "setup-circe.el")
 
 (load "setup-magit.el")
 
 ;; For email
                                         ;(load "setup-mu4e.el")
-(load "~/.emacs.d/mu4e/config.el")
+;; (load "~/.emacs.d/mu4e/config.el")
 ;(pdf-loader-install)
 
 ;; For eshell
 (load "setup-eshell.el")
 
-;; Hipster screenshots: https://github.com/tecosaur/screenshot
 (load "screenshot.el")
-
 
 ;; ==========================
 ;; Begin use-package conversion
@@ -128,7 +112,7 @@
    '(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults))
  '(elpy-test-runner 'elpy-test-pytest-runner)
  '(package-selected-packages
-   '(racket-mode auctex-latexmk auctex org-mime org-msg org-mime flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi ido-completing-read+ hlinum graphql-mode ghub flyspell-correct flx-ido find-file-in-project exec-path-from-shell evil-org evil-collection emojify elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
+   '(racket-mode auctex-latexmk auctex org-mime org-msg org-mime flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi hlinum graphql-mode ghub flyspell-correct find-file-in-project exec-path-from-shell evil-org evil-collection emojify elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
  '(safe-local-variable-values
    '((cider-clojure-cli-aliases . "dev")
      (cider-shadow-watched-builds "admin" "client" "organization")
@@ -153,10 +137,10 @@
 (require 'transpose-frame)
 
 ;; Terrible hack to fix profile mode bug: https://github.com/bbatsov/projectile/issues/1183
-(add-hook 'after-init-hook 'global-company-mode)
-(setq projectile-mode-line
-      '(:eval (format " Projectile[%s(%s)]"
-                      (projectile-project-name))))
+;; (add-hook 'after-init-hook 'global-company-mode)
+;; (setq projectile-mode-line
+;;       '(:eval (format " Projectile[%s(%s)]"
+;;                       (projectile-project-name))))
 
 ;; This reverts files automatically
 ;; (global-auto-revert-mode t)
@@ -168,32 +152,8 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; Similar to C-x C-e, but sends to REBL
-(defun rebl-eval-last-sexp ()
-  (interactive)
-  (let* ((bounds (cider-last-sexp 'bounds))
-         (s (cider-last-sexp))
-         (reblized (concat "(cognitect.rebl/inspect " s ")")))
-    (cider-interactive-eval reblized nil bounds (cider--nrepl-print-request-map))))
-
-;; Similar to C-M-x, but sends to REBL
-(defun rebl-eval-defun-at-point ()
-  (interactive)
-  (let* ((bounds (cider-defun-at-point 'bounds))
-         (s (cider-defun-at-point))
-         (reblized (concat "(cognitect.rebl/inspect " s ")")))
-    (cider-interactive-eval reblized nil bounds (cider--nrepl-print-request-map))))
-
-;; C-S-x send defun to rebl
-;; C-x C-r send last sexp to rebl (Normally bound to "find-file-read-only"... Who actually uses that though?)
-(add-hook 'cider-mode-hook
-          (lambda ()
-            (local-set-key (kbd "C-S-x") #'rebl-eval-defun-at-point)
-            (local-set-key (kbd "C-x C-r") #'rebl-eval-last-sexp)))
-
-
-(require 'epa)
-(epa-file-enable)
+;; (require 'epa)
+;; (epa-file-enable)
 ;; Pin entry on minibuffer
-(setq epa-pinentry-mode 'loopback)
-(pinentry-start)
+;; (setq epa-pinentry-mode 'loopback)
+;; (pinentry-start)

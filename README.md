@@ -4,7 +4,7 @@ This is my Emacs config. It's mostly based around using Emacs for Clojure progra
 
 ## Installation
 
-### macOS Catalina
+### macOS Monterey
 
 1. `brew cask install emacs`
 2. `git clone git@github.com:amackera/emacs.d.git .emacs.d`
