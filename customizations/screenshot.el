@@ -3,9 +3,9 @@
 ;; Copyright (C) 2020 TEC
 
 ;; Author: TEC <http://github/tecosaur>
-;; Maintainer: TEC <http://github/tecosaur>
+;; Maintainer: TEC <tec@tecosaur.com>
 ;; Homepage: https://github.com/tecosaur/screenshot
-;; Version: 0.0.1
+;; Version: 0.1.0
 ;; Keywords: convenience, screenshot
 ;; Package-Requires: ((emacs "27") (transient "0.2.0") (posframe "0.8.3"))
 
@@ -55,23 +55,175 @@ Run after hardcoded setup, but before the screenshot is captured."
 (defvar screenshot--region-end nil
   "End of the region forming the screenshot.")
 
+(defvar screenshot--tmp-file nil
+  "An intermediate target file for the screenshot.")
+
+(defvar screenshot--first-line-number nil
+  "The first line contained in the screenshot.")
+
+(defvar screenshot--total-lines nil
+  "The total number of lines contained in the screenshot.")
+
+;;; Generated variables
+
+;;; Screenshot parameters
+
+(eval-when-compile
+  (defmacro screenshot--define-infix (key name description type default
+                                          &rest reader)
+    "Define infix with KEY, NAME, DESCRIPTION, TYPE, DEFAULT and READER as arguments."
+    `(progn
+       (defcustom ,(intern (concat "screenshot-" name)) ,default
+         ,description
+         :type ,type
+         :group 'screenshot)
+       (transient-define-infix ,(intern (concat "screenshot--set-" name)) ()
+         "Set `screenshot--theme' from a popup buffer."
+         :class 'transient-lisp-variable
+         :variable ',(intern (concat "screenshot-" name))
+         :key ,key
+         :description ,description
+         :argument ,(concat "--" name)
+         :reader (lambda (&rest _) ,@reader))))
+
+  (screenshot--define-infix
+   "-l" "line-numbers-p" "Show line numbers"
+   'boolean nil
+   (not screenshot-line-numbers-p))
+
+  (screenshot--define-infix
+   "-L" "relative-line-numbers-p" "Relative line numbers within the screenshot"
+   'boolean nil
+   (not screenshot-relative-line-numbers-p))
+
+  (screenshot--define-infix
+   "-t" "text-only-p" "Use a text-only version of the buffer"
+   'boolean nil
+   (not screenshot-text-only-p))
+
+  (screenshot--define-infix
+   "-T" "truncate-lines-p" "Truncate lines beyond the screenshot width"
+   'boolean nil
+   (not screenshot-truncate-lines-p))
+
+  (declare-function counsel-fonts "ext:counsel-fonts")
+
+  (declare-function ivy-read "ext:ivy-read")
+
+  (screenshot--define-infix
+   "-ff" "font-family" "Font family to use"
+   'string (let ((font (face-attribute 'default :font)))
+             (if (eq font 'unspecified) "monospace"
+               (symbol-name (font-get font :family))))
+   (if (fboundp #'counsel-fonts)
+       (ivy-read "Font: " (delete-dups (font-family-list))
+                 :preselect screenshot-font-family
+                 :require-match t
+                 :history 'counsel-fonts-history
+                 :caller 'counsel-fonts)
+     (completing-read "Font: " (delete-dups (font-family-list)))))
+
+  (screenshot--define-infix
+   "-fs" "font-size" "Font size (pt)"
+   'number 14
+   (read-number "Font size in pt: " screenshot-font-size))
+
+;;;; Frame
+
+  (screenshot--define-infix
+   "-b" "border-width" "Border width in pixels"
+   'integer 20
+   (read-number "Border width in px: " screenshot-border-width))
+
+  (screenshot--define-infix
+   "-r" "radius" "Rounded corner radius"
+   'integer 10
+   (read-number "Border radius in px: " screenshot-radius))
+
+  (screenshot--define-infix
+   "-w" "min-width" "Minimum width, in columns"
+   'integer 40
+   (read-number "Minimum width (columns): " screenshot-min-width))
+
+  (screenshot--define-infix
+   "-W" "max-width" "Maximum width, in columns"
+   'integer 120
+   (read-number "Maximum width (columns): " screenshot-max-width))
+
+;;;; Shadow
+
+  (screenshot--define-infix
+   "-s" "shadow-radius" "Radius of the shadow in pixels"
+   'integer 12
+   (read-number "Shadow width in px: " screenshot-shadow-radius))
+
+  (screenshot--define-infix
+   "-i" "shadow-intensity" "Intensity of the shadow"
+   'integer 80
+   (read-number "Shadow intensity: " screenshot-shadow-intensity))
+
+  (screenshot--define-infix
+   "-c" "shadow-color" "Color of the shadow"
+   'color "#333"
+   (read-string "Shadow color: " screenshot-shadow-color))
+
+  (screenshot--define-infix
+   "-x" "shadow-offset-horizontal" "Shadow horizontal offset"
+   'integer -8
+   (read-number "Shadow horizontal offset in px: " screenshot-shadow-offset-horizontal))
+
+  (screenshot--define-infix
+   "-y" "shadow-offset-vertical" "Shadow vertical offset"
+   'integer 5
+   (read-number "Shadow vertical offset in px: " screenshot-shadow-offset-vertical)))
+
+;;; Main function
+
 ;;;###autoload
-(defun screenshot (beg end)
+(defun screenshot (beg end &optional upload-text)
   "Take a screenshot of the current region or buffer.
 
 Region included in screenshot is the active selection, interactively,
-or given by BEG and END.  Buffer is used if region spans 0-1 characters."
+or given by BEG and END.  Buffer is used if region spans 0-1 characters.
+
+When a universal argument is given, UPLOAD-TEXT is non-nil.
+Then the text of the region/buffer is uploaded, and the URL is copied to clipboard."
   (interactive (if (region-active-p)
-                   (list (region-beginning) (region-end))
-                 (list (point-min) (point-max))))
-  (deactivate-mark)
+                   (list (region-beginning) (region-end) (when current-prefix-arg t))
+                 (list (point-min) (point-max) (when current-prefix-arg t))))
 
-  (screenshot--set-screenshot-region beg end)
+  (if upload-text
+      (screenshot-text-upload beg end)
+    (deactivate-mark)
+    (screenshot--set-screenshot-region beg end)
+    (setq screenshot--tmp-file
+          (make-temp-file "screenshot-" nil ".png"))
+    (call-interactively #'screenshot-transient)))
 
-  (setq screenshot--tmp-file
-        (make-temp-file "screenshot-" nil ".png"))
+(defvar screenshot-text-upload-function #'screenshot-ixio-upload
+  "Function to use to upload text.
 
-  (screenshot-transient))
+Must take a start and end position for the current buffer, and
+return a URL.")
+
+(defun screenshot-text-upload (beg end)
+  "Upload the region from BEG to END, and copy the upload URL to the clipboard."
+  (message "Uploading text...")
+  (let ((url
+         (funcall screenshot-text-upload-function beg end)))
+    (gui-select-text url)
+    (message "Screenshot uploaded, link copied to clipboard (%s)" url)))
+
+(defun screenshot-ixio-upload (beg end)
+  "Upload the region from BEG to END to ix.io, and return the URL."
+  (let ((output (generate-new-buffer "ixio")) url)
+    (shell-command-on-region beg end
+                             (format "curl -F 'ext:1=%s' -F 'f:1=<-' ix.io 2>/dev/null"
+                                     (file-name-extension (or (buffer-file-name) " .txt")))
+                             output)
+    (setq url (string-trim-right (with-current-buffer output (buffer-string))))
+    (kill-buffer output)
+    url))
 
 ;;; Screenshot capturing
 
@@ -97,7 +249,7 @@ and the line number of the first line of the region."
   (setq screenshot--region-beginning beg
         screenshot--region-end end
         screenshot--first-line-number (line-number-at-pos beg)
-        screenshot--total-lines (- (line-number-at-pos end) (line-number-at-pos beg))))
+        screenshot--total-lines (- (line-number-at-pos end) (line-number-at-pos beg) -1)))
 
 (defun screenshot--setup-buffer ()
   "Modify the current buffer to make it appropriate for screenshotting."
@@ -105,8 +257,8 @@ and the line number of the first line of the region."
                                      (show-paren-match nil)
                                      (region nil))
               line-spacing 0.1)
-  (when (and (featurep 'hl-line) hl-line-mode)
-    (hl-line-mode -1))
+  (when (bound-and-true-p hl-line-mode) (hl-line-mode -1))
+  (when (bound-and-true-p solaire-mode) (solaire-mode -1))
   (run-hooks 'screenshot-buffer-creation-hook))
 
 (defvar screenshot--text-only-buffer
@@ -122,6 +274,8 @@ and the line number of the first line of the region."
   ;; include indentation if `beg' is where indentation starts
   (let ((s (string-trim-right (buffer-substring beg end))))
     (with-current-buffer (setq screenshot--buffer screenshot--text-only-buffer)
+      (buffer-face-set :family screenshot-font-family
+                       :height (* 10 screenshot-font-size))
       (erase-buffer)
       (insert s)
       (indent-rigidly (point-min) (point-max)
@@ -130,18 +284,27 @@ and the line number of the first line of the region."
       (current-buffer))))
 
 (defun screenshot--narrowed-clone-buffer (beg end)
+  "Create a clone of the current buffer, narrowed to the region from BEG to END.
+This buffer then then set up to be used for a screenshot."
   (with-current-buffer (clone-indirect-buffer " *screenshot-clone" nil t)
     (narrow-to-region beg end)
     (screenshot--setup-buffer)
+    (buffer-face-set :family screenshot-font-family
+                     :height (* 10 screenshot-font-size))
     (current-buffer)))
 
 ;;; Screenshot processing
 
 (defun screenshot--process ()
+  "Perform the screenshot process.
+
+Create a buffer for the screenshot, use `x-export-frames' to create the image,
+and process it."
   (setq screenshot--buffer
         (if screenshot-text-only-p
             (screenshot--format-text-only-buffer screenshot--region-beginning screenshot--region-end)
           (screenshot--narrowed-clone-buffer screenshot--region-beginning screenshot--region-end)))
+
   (let ((frame (posframe-show
                 screenshot--buffer
                 :position (point-min)
@@ -199,77 +362,83 @@ Must take a single argument, the file name, and operate in-place."
                     screenshot-shadow-offset-horizontal
                     screenshot-shadow-offset-vertical))))
       (unless (string= result "")
-        (error "Could not apply imagemagick commants to image:\n%s" result))))
+        (error "Could not apply imagemagick commands to image:\n%s" result))))
   (run-hook-with-args 'screenshot-post-process-hook file))
 
 ;;; Screenshot actions
 
-(defmacro screenshot--def-action (name &rest body)
-  `(defun ,(intern (concat "screenshot-" name)) (&optional args)
-     (interactive
-      (list (transient-args 'screenshot-transient)))
-     (screenshot--process)
-     ,@body))
+(eval-when-compile
+  (defmacro screenshot--def-action (name &rest body)
+    "Define action NAME to be performed from the transient interface.
+BODY is executed after `screenshot-process' is called."
+    `(defun ,(intern (concat "screenshot-" name)) (&optional _args)
+       "Screenshot action to be performed from the transient interface."
+       (interactive
+        (list (transient-args 'screenshot-transient)))
+       (screenshot--process)
+       ,@body))
 
-(screenshot--def-action
- "save"
- (rename-file
-  screenshot--tmp-file
-  (concat (file-name-sans-extension
-           (or (buffer-file-name)
-               (expand-file-name "screenshot")))
-          ".png")
-  t)
- (message "Screenshot saved"))
+  (screenshot--def-action
+   "save"
+   (rename-file
+    screenshot--tmp-file
+    (concat (file-name-sans-extension
+             (or (buffer-file-name)
+                 (expand-file-name "screenshot")))
+            ".png")
+    t)
+   (message "Screenshot saved"))
 
-(screenshot--def-action
- "save-as"
- (rename-file
-  screenshot--tmp-file
-  (read-file-name "Save as: " (file-name-directory (or (buffer-file-name) default-directory)))
-  1)
- (message "Screenshot saved"))
+  (screenshot--def-action
+   "save-as"
+   (rename-file
+    screenshot--tmp-file
+    (read-file-name "Save as: " (file-name-directory (or (buffer-file-name) default-directory)))
+    1)
+   (message "Screenshot saved"))
 
-(screenshot--def-action
- "copy"
- (call-process "xclip" nil nil nil
-               "-selection" "clipboard"
-               "-target" "image/png"
-               "-in" screenshot--tmp-file)
- (delete-file screenshot--tmp-file)
- (message "Screenshot copied"))
+  (screenshot--def-action
+   "copy"
+   (call-process "xclip" nil nil nil
+                 "-selection" "clipboard"
+                 "-target" "image/png"
+                 "-in" screenshot--tmp-file)
+   (delete-file screenshot--tmp-file)
+   (message "Screenshot copied"))
 
-(defcustom screenshot-upload-fn nil
-  "Function or string which provides a method to upload a file.
+  (defcustom screenshot-upload-fn nil
+    "Function or string which provides a method to upload a file.
 If a function, it must take a filename and returns a URL to it.
 If a string, it is formatted with the file name, and run as a shell command.
 
 Note: you have to define this yourself, there is no default."
-  :type '(choice function string)
-  :group 'screenshot)
+    :type '(choice function string)
+    :group 'screenshot)
 
-(screenshot--def-action
- "upload"
- (if (not screenshot-upload-fn)
-     (error "No upload function defined")
-   (message "Uploading...")
-   (let ((url
-          (pcase screenshot-upload-fn
-            ((pred functionp) (funcall screenshot-upload-fn screenshot--tmp-file))
-            ((pred stringp) (string-trim-right (shell-command-to-string (format screenshot-upload-fn screenshot--tmp-file))))
-            (_ (error "Upload function is not a function or string!")))))
-     (gui-select-text url)
-     (message "Screenshot uploaded, link copied to clipboard (%s)" url)))
- (delete-file screenshot--tmp-file))
+  (screenshot--def-action
+   "upload"
+   (if (not screenshot-upload-fn)
+       (error "No upload function defined")
+     (message "Uploading...")
+     (let ((url
+            (pcase screenshot-upload-fn
+              ((pred functionp) (funcall screenshot-upload-fn screenshot--tmp-file))
+              ((pred stringp) (string-trim-right (shell-command-to-string (format screenshot-upload-fn screenshot--tmp-file))))
+              (_ (error "Upload function is not a function or string!")))))
+       (gui-select-text url)
+       (message "Screenshot uploaded, link copied to clipboard (%s)" url)))
+   (delete-file screenshot--tmp-file)))
 
 ;;; Screenshot transient
 
-(define-transient-command screenshot-transient ()
+(transient-define-prefix screenshot-transient ()
   ["Code"
    (screenshot--set-line-numbers-p)
    (screenshot--set-relative-line-numbers-p)
    (screenshot--set-text-only-p)
-   (screenshot--set-truncate-lines-p)]
+   (screenshot--set-truncate-lines-p)
+   (screenshot--set-font-family)
+   (screenshot--set-font-size)]
   ["Frame"
    (screenshot--set-border-width)
    (screenshot--set-radius)
@@ -286,93 +455,6 @@ Note: you have to define this yourself, there is no default."
    ("S" "Save as" screenshot-save-as)
    ("c" "Copy" screenshot-copy)
    ("u" "Upload" screenshot-upload)])
-
-(defmacro screenshot--define-infix (key name description type default &rest reader)
-  `(progn
-     (defcustom ,(intern (concat "screenshot-" name)) ,default
-       ,description
-       :type ,type
-       :group 'screenshot)
-     (transient-define-infix ,(intern (concat "screenshot--set-" name)) ()
-       "Set `screenshot--theme' from a popup buffer."
-       :class 'transient-lisp-variable
-       :variable ',(intern (concat "screenshot-" name))
-       :key ,key
-       :description ,description
-       :argument ,(concat "--" name)
-       :reader (lambda (&rest _) ,@reader))))
-
-;;; Screenshot parameters
-;;;; Code
-
-(screenshot--define-infix
- "-l" "line-numbers-p" "Show line numbers"
- 'boolean t
- (not screenshot-line-numbers-p))
-
-(screenshot--define-infix
- "-L" "relative-line-numbers-p" "Relative line numbers within the screenshot"
- 'boolean nil
- (not screenshot-relative-line-numbers-p))
-
-(screenshot--define-infix
- "-t" "text-only-p" "Use a text-only version of the buffer"
- 'boolean t
- (not screenshot-text-only-p))
-
-(screenshot--define-infix
- "-T" "truncate-lines-p" "Truncate lines beyond the screenshot width"
- 'boolean nil
- (not screenshot-truncate-lines-p))
-
-;;;; Frame
-
-(screenshot--define-infix
- "-b" "border-width" "Border width in pixels"
- 'integer 20
- (read-number "Border width in px: " screenshot-border-width))
-
-(screenshot--define-infix
- "-r" "radius" "Rounded corner radius"
- 'integer 10
- (read-number "Border radius in px: " screenshot-radius))
-
-(screenshot--define-infix
- "-w" "min-width" "Minimum width, in columns"
- 'integer 40
- (read-number "Minimum width (columns): " screenshot-min-width))
-
-(screenshot--define-infix
- "-W" "max-width" "Minimum width, in columns"
- 'integer 120
- (read-number "Maximum width (columns): " screenshot-max-width))
-
-;;;; Shadow
-
-(screenshot--define-infix
- "-s" "shadow-radius" "Radius of the shadow in pixels"
- 'integer 12
- (read-number "Shadow width in px: " screenshot-shadow-radius))
-
-(screenshot--define-infix
- "-i" "shadow-intensity" "Intensity of the shadow"
- 'integer 100
- (read-number "Shadow width in px: " screenshot-shadow-intensity))
-
-(screenshot--define-infix
- "-c" "shadow-color" "Color of the shadow"
- 'color "#333"
- (read-string "Shadow color: " screenshot-shadow-color))
-
-(screenshot--define-infix
- "-x" "shadow-offset-horizontal" "Shadow horizontal offset"
- 'integer 8
- (read-number "Shadow horizontal offset in px: " screenshot-shadow-offset-horizontal))
-
-(screenshot--define-infix
- "-y" "shadow-offset-vertical" "Shadow vertical offset"
- 'integer 5
- (read-number "Shadow vertical offset in px: " screenshot-shadow-offset-vertical))
 
 (provide 'screenshot)
 ;;; screenshot.el ends here

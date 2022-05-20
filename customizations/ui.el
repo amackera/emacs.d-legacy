@@ -121,3 +121,6 @@
     (global-fira-code-mode)
     (setq x-super-keysym 'meta)
     (set-face-attribute 'default nil :font "Fira Code" :height 90 :weight 'semi-bold))))
+
+;; Enable clickable links
+(goto-address-mode)

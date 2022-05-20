@@ -4,7 +4,7 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
  (filename . "~/Dropbox/org/tasks.org")
- (front-context-string . "** TODO [#A] Get")
- (rear-context-string . "ng-clio-users]]\n")
- (position . 2509))
+ (front-context-string . "** TODO [#A] Ema")
+ (rear-context-string . "protocol-header\n")
+ (position . 9011))
 )

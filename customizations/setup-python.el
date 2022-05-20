@@ -1,4 +1,5 @@
-(require 'pyenv-mode)
+
+;(require 'pyenv-mode)
 
 
 (elpy-enable)
