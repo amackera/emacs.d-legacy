@@ -36,7 +36,6 @@
 (depends-on "ein")
 (depends-on "elpy")
 (depends-on "emacs" "24.3")
-(depends-on "emojify")
 (depends-on "epc" "0.1.0")
 (depends-on "epl")
 (depends-on "evil")

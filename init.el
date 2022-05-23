@@ -112,9 +112,11 @@
    '(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults))
  '(elpy-test-runner 'elpy-test-pytest-runner)
  '(package-selected-packages
-   '(racket-mode auctex-latexmk auctex org-mime org-msg org-mime flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi hlinum graphql-mode ghub flyspell-correct find-file-in-project exec-path-from-shell evil-org evil-collection emojify elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
+   '(racket-mode auctex-latexmk auctex org-mime org-msg org-mime flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi hlinum graphql-mode ghub flyspell-correct find-file-in-project exec-path-from-shell evil-org evil-collection elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
  '(safe-local-variable-values
-   '((cider-clojure-cli-aliases . "dev")
+   '((cider-clojure-cli-aliases . "dev:test")
+     (cider-clojure-cli-global-options . "-A:dev:test")
+     (cider-clojure-cli-aliases . "dev")
      (cider-shadow-watched-builds "admin" "client" "organization")
      (cider-clojure-cli-global-options . "-A:test:dev")
      (cider-shadow-watched-builds "admin" "customer" "firm")
