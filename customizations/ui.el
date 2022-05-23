@@ -124,3 +124,51 @@
 
 ;; Enable clickable links
 (goto-address-mode)
+
+(defun amackera/split-windows()
+  "Split windows sasa's way."
+  (interactive)
+  ;; Create new window right of the current one
+  ;; Current window is 80 characters (columns) wide
+  (split-window-right 120)
+  ;; Go to next window
+  (other-window 1)
+  ;; Create new window below current one
+  (split-window-below)
+  ;; Start eshell in current window
+  (eshell)
+  ;; Go to previous window
+  (other-window -1)
+  ;; never open any buffer in window with shell
+  (set-window-dedicated-p (nth 1 (window-list)) t))
+
+(defun amackera/display-buffer (buffer &optional alist)
+  "Select window for BUFFER (need to use word ALIST on the first line).
+Returns third visible window if there are three visible windows, nil otherwise.
+Minibuffer is ignored."
+  (let ((wnr (if (active-minibuffer-window) 3 2)))
+    (when (= (+ wnr 1) (length (window-list)))
+      (let ((window (nth wnr (window-list))))
+        (set-window-buffer window buffer)
+        window))))
+
+(defvar amackera/help-temp-buffers '("^\\*Flycheck errors\\*$"
+                                     "^\\*Completions\\*$"
+                                     "^\\*Help\\*$"
+                                     ;; Other buffers names...
+                                     "^\\*cider-repl\\*$"
+                                     "^\\*cider-error\\*$"
+                                     "^\\*Colors\\*$"
+                                     "^\\*Async Shell Command\\*$"))
+
+(while amackera/help-temp-buffers
+  (add-to-list 'display-buffer-alist
+               `(,(car amackera/help-temp-buffers)
+                 (display-buffer-reuse-window
+                  sasa/display-buffer
+                  display-buffer-in-side-window)
+                 (reusable-frames     . visible)
+                 (side                . bottom)
+                 (window-height       . 0.33)
+                 ))
+  (setq amackera/help-temp-buffers (cdr amackera/help-temp-buffers)))
