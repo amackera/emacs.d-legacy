@@ -130,7 +130,7 @@
   (interactive)
   ;; Create new window right of the current one
   ;; Current window is 80 characters (columns) wide
-  (split-window-right 120)
+  (split-window-right 180)
   ;; Go to next window
   (other-window 1)
   ;; Create new window below current one
@@ -156,16 +156,17 @@ Minibuffer is ignored."
                                      "^\\*Completions\\*$"
                                      "^\\*Help\\*$"
                                      ;; Other buffers names...
-                                     "^\\*cider-repl\\*$"
-                                     "^\\*cider-error\\*$"
+                                     "^\\*cider-repl"
+                                     "^\\*cider-error"
                                      "^\\*Colors\\*$"
+                                     "^magit:"
                                      "^\\*Async Shell Command\\*$"))
 
 (while amackera/help-temp-buffers
   (add-to-list 'display-buffer-alist
                `(,(car amackera/help-temp-buffers)
                  (display-buffer-reuse-window
-                  sasa/display-buffer
+                  amackera/display-buffer
                   display-buffer-in-side-window)
                  (reusable-frames     . visible)
                  (side                . bottom)
