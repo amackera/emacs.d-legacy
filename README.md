@@ -6,7 +6,8 @@ This is my Emacs config. It's mostly based around using Emacs for Clojure progra
 
 ### macOS Monterey
 
-1. `brew cask install emacs`
+1. `brew tap railwaycat/emacsmacport`
+1. `brew cask install emacs-mac`
 2. `git clone git@github.com:amackera/emacs.d.git .emacs.d`
 3. `brew install cask`
 4. `cd .emacs.d`
