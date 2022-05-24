@@ -98,12 +98,6 @@
 (setq ring-bell-function 'ignore)
 (setq-default left-fringe-width  10)
 
-;; black magic taken from https://emacs.stackexchange.com/a/338/15177
-(add-to-list 'display-buffer-alist
-         '("^\\*compilation\\*". ((display-buffer-reuse-window)  .
-                                  ((reusable-frames . t)
-                                  (inhibit-same-window . t)))))
-
 ;; Better window movement
 (windmove-default-keybindings)
 
@@ -140,7 +134,8 @@
   ;; Go to previous window
   (other-window -1)
   ;; never open any buffer in window with shell
-  (set-window-dedicated-p (nth 1 (window-list)) t))
+  ;; (set-window-dedicated-p (nth 1 (window-list)) t)
+  )
 
 (defun amackera/display-buffer (buffer &optional alist)
   "Select window for BUFFER (need to use word ALIST on the first line).
@@ -158,6 +153,7 @@ Minibuffer is ignored."
                                      ;; Other buffers names...
                                      "^\\*cider-repl"
                                      "^\\*cider-error"
+                                     "^\\*cider-test-report\\*"
                                      "^\\*Colors\\*$"
                                      "^magit:"
                                      "^\\*Async Shell Command\\*$"))
