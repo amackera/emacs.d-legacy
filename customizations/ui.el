@@ -137,35 +137,44 @@
   ;; (set-window-dedicated-p (nth 1 (window-list)) t)
   )
 
-(defun amackera/display-buffer (buffer &optional alist)
+(defun amackera/display-buffer-last (buffer &optional alist)
   "Select window for BUFFER (need to use word ALIST on the first line).
-Returns third visible window if there are three visible windows, nil otherwise.
-Minibuffer is ignored."
-  (let ((wnr (if (active-minibuffer-window) 3 2)))
-    (when (= (+ wnr 1) (length (window-list)))
-      (let ((window (nth wnr (window-list))))
+Returns third visible window if there are three visible windows,
+nil otherwise.  Minibuffer is ignored.
+
+https://www.simplify.ba/articles/2016/01/25/display-buffer-alist/"
+  (let ((wnr (if (active-minibuffer-window) 4 3)))
+    (when (= wnr (length (window-list)))
+      (let ((window (nth (- wnr 1) (window-list))))
         (set-window-buffer window buffer)
         window))))
 
-(defvar amackera/help-temp-buffers '("^\\*Flycheck errors\\*$"
-                                     "^\\*Completions\\*$"
-                                     "^\\*Help\\*$"
-                                     ;; Other buffers names...
-                                     "^\\*cider-repl"
-                                     "^\\*cider-error"
-                                     "^\\*cider-test-report\\*"
-                                     "^\\*Colors\\*$"
-                                     "^magit:"
-                                     "^\\*Async Shell Command\\*$"))
+(defun amackera/display-buffer-second-last (buffer &optional alist)
+  "Select window for BUFFER (need to use word ALIST on the first line).
+Returns second visible window if there are three visible windows,
+nil otherwise.  Minibuffer is ignored."
+  (let ((wnr (if (active-minibuffer-window) 4 3)))
+    (when (= wnr (length (window-list)))
+      (let ((window (nth (- wnr 2) (window-list))))
+        (set-window-buffer window buffer)
+        window))))
 
-(while amackera/help-temp-buffers
-  (add-to-list 'display-buffer-alist
-               `(,(car amackera/help-temp-buffers)
-                 (display-buffer-reuse-window
-                  amackera/display-buffer
-                  display-buffer-in-side-window)
-                 (reusable-frames     . visible)
-                 (side                . bottom)
-                 (window-height       . 0.33)
-                 ))
-  (setq amackera/help-temp-buffers (cdr amackera/help-temp-buffers)))
+(customize-set-variable
+ 'display-buffer-alist
+ '(("^magit"
+    (display-buffer-reuse-window
+     amackera/display-buffer-second-last
+     display-buffer-in-side-window)
+    (reusable-frames     . visible)
+    (side                . bottom)
+    (window-height       . 0.33))
+   ("^\\*cider"
+    (display-buffer-reuse-window
+     amackera/display-buffer-last
+     display-buffer-in-side-window)
+    (reusable-frames     . visible)
+    (side                . bottom)
+    (window-height       . 0.33))))
+
+(provide 'ui)
+;;; ui.el ends here
