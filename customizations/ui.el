@@ -168,6 +168,13 @@ nil otherwise.  Minibuffer is ignored."
     (reusable-frames     . visible)
     (side                . bottom)
     (window-height       . 0.33))
+   ("^\\*grep"
+    (display-buffer-reuse-window
+     amackera/display-buffer-second-last
+     display-buffer-in-side-window)
+    (reusable-frames     . visible)
+    (side                . bottom)
+    (window-height       . 0.33))
    ("^\\*cider"
     (display-buffer-reuse-window
      amackera/display-buffer-last

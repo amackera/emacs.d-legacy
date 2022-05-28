@@ -112,6 +112,7 @@
 (depends-on "realgud")
 (depends-on "request")
 (depends-on "request-deferred")
+(depends-on "restclient")
 (depends-on "rjsx-mode")
 (depends-on "s")
 (depends-on "scss-mode")
