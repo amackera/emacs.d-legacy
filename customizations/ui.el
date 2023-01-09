@@ -1,3 +1,4 @@
+
 ;; These customizations change the way emacs looks and disable/enable
 ;; some user interface elements. Some useful customizations are
 ;; commented out, and begin with the line "CUSTOMIZE". These are more
@@ -119,69 +120,78 @@
 ;; Enable clickable links
 (goto-address-mode)
 
-(defun amackera/split-windows()
-  "Split windows sasa's way."
-  (interactive)
-  ;; Create new window right of the current one
-  ;; Current window is 80 characters (columns) wide
-  (split-window-right 180)
-  ;; Go to next window
-  (other-window 1)
-  ;; Create new window below current one
-  (split-window-below)
-  ;; Start eshell in current window
-  (eshell)
-  ;; Go to previous window
-  (other-window -1)
-  ;; never open any buffer in window with shell
-  ;; (set-window-dedicated-p (nth 1 (window-list)) t)
-  )
+;; (defun amackera/split-windows()
+;;   "Split windows sasa's way."
+;;   (interactive)
+;;   ;; Create new window right of the current one
+;;   ;; Current window is 80 characters (columns) wide
+;;   (split-window-right 180)
+;;   ;; Go to next window
+;;   (other-window 1)
+;;   ;; Create new window below current one
+;;   (split-window-below)
+;;   ;; Start eshell in current window
+;;   (eshell)
+;;   ;; Go to previous window
+;;   (other-window -1)
+;;   ;; never open any buffer in window with shell
+;;   ;; (set-window-dedicated-p (nth 1 (window-list)) t)
+;;   )
 
-(defun amackera/display-buffer-last (buffer &optional alist)
-  "Select window for BUFFER (need to use word ALIST on the first line).
-Returns third visible window if there are three visible windows,
-nil otherwise.  Minibuffer is ignored.
+;; (defun amackera/display-buffer-last (buffer &optional alist)
+;;   "Select window for BUFFER (need to use word ALIST on the first line).
+;; Returns third visible window if there are three visible windows,
+;; nil otherwise.  Minibuffer is ignored.
 
-https://www.simplify.ba/articles/2016/01/25/display-buffer-alist/"
-  (let ((wnr (if (active-minibuffer-window) 4 3)))
-    (when (= wnr (length (window-list)))
-      (let ((window (nth (- wnr 1) (window-list))))
-        (set-window-buffer window buffer)
-        window))))
+;; https://www.simplify.ba/articles/2016/01/25/display-buffer-alist/"
+;;   (let ((wnr (if (active-minibuffer-window) 4 3)))
+;;     (when (= wnr (length (window-list)))
+;;       (let ((window (nth (- wnr 1) (window-list))))
+;;         (set-window-buffer window buffer)
+;;         window))))
 
-(defun amackera/display-buffer-second-last (buffer &optional alist)
-  "Select window for BUFFER (need to use word ALIST on the first line).
-Returns second visible window if there are three visible windows,
-nil otherwise.  Minibuffer is ignored."
-  (let ((wnr (if (active-minibuffer-window) 4 3)))
-    (when (= wnr (length (window-list)))
-      (let ((window (nth (- wnr 2) (window-list))))
-        (set-window-buffer window buffer)
-        window))))
+;; (defun amackera/display-buffer-second-last (buffer &optional alist)
+;;   "Select window for BUFFER (need to use word ALIST on the first line).
+;; Returns second visible window if there are three visible windows,
+;; nil otherwise.  Minibuffer is ignored."
+;;   (let ((wnr (if (active-minibuffer-window) 4 3)))
+;;     (when (= wnr (length (window-list)))
+;;       (let ((window (nth (- wnr 2) (window-list))))
+;;         (set-window-buffer window buffer)
+;;         window))))
 
-(customize-set-variable
- 'display-buffer-alist
- '(("^magit"
-    (display-buffer-reuse-window
-     amackera/display-buffer-second-last
-     display-buffer-in-side-window)
-    (reusable-frames     . visible)
-    (side                . bottom)
-    (window-height       . 0.33))
-   ("^\\*grep"
-    (display-buffer-reuse-window
-     amackera/display-buffer-second-last
-     display-buffer-in-side-window)
-    (reusable-frames     . visible)
-    (side                . bottom)
-    (window-height       . 0.33))
-   ("^\\*cider"
-    (display-buffer-reuse-window
-     amackera/display-buffer-last
-     display-buffer-in-side-window)
-    (reusable-frames     . visible)
-    (side                . bottom)
-    (window-height       . 0.33))))
+;; (customize-set-variable
+;;  'display-buffer-alist
+;;  '(("^magit"
+;;     ( amackera/display-buffer-second-last))
+;;    ("^\\*Agenda Commands\\*"
+;;     (amackera/display-buffer-second-last))
+;;    ("^\\*Org Agenda\\*"
+;;     (amackera/display-buffer-second-last))
+;;    ("^\\*Org Select\\*"
+;;     (amackera/display-buffer-second-last))
+;;    ("^CAPTURE-tasks.org"
+;;     (amackera/display-buffer-last))
+;;    ("^\\*grep"
+;;     (display-buffer-reuse-window
+;;      amackera/display-buffer-second-last
+;;      display-buffer-in-side-window)
+;;     (reusable-frames     . visible)
+;;     (side                . bottom)
+;;     (window-height       . 0.33))
+;;    ("^\\*cider"
+;;     (display-buffer-reuse-window
+;;      amackera/display-buffer-last
+;;      display-buffer-in-side-window)
+;;     (reusable-frames     . visible)
+;;     (side                . bottom)
+;;     (window-height       . 0.33))))
+
+;; Better window navigation
+(global-set-key (kbd "M-o") 'ace-window)
+
+;; eyebrowse mode (window manager tags)
+(eyebrowse-mode)
 
 (provide 'ui)
 ;;; ui.el ends here

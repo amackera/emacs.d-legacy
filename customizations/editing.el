@@ -1,7 +1,7 @@
 ;; Customizations relating to editing a buffer.
 
 ;; Obviously we need emojis
-(add-hook 'after-init-hook #'global-emojify-mode)
+;; (add-hook 'after-init-hook #'global-emojify-mode)
 
 ;; Key binding to use "hippie expand" for text autocompletion
 ;; http://www.emacswiki.org/emacs/HippieExpand
@@ -72,3 +72,16 @@
     (quit nil)))
 
 (setq electric-indent-mode 0)
+
+;; Make it easier to select inner and outer regions (select whole string)
+(require 'change-inner)
+(global-set-key (kbd "M-i") 'change-inner)
+(global-set-key (kbd "M-o") 'change-outer)
+
+;;; Stefan Monnier <foo at acm.org>. It is the opposite of
+;;; fill-paragraph
+(defun unfill-paragraph ()
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive)
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil)))

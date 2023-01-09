@@ -3,4 +3,4 @@
   :init
   (setq
    pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended))
+   #'pipenv-projectile-after-switch-default))

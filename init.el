@@ -13,6 +13,10 @@
   (progn
     (require 'cask "/usr/share/emacs/site-lisp/cask/cask.el"))))
 
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  (require 'use-package))
+
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
@@ -56,7 +60,8 @@
 (load "setup-typescript.el")
 ;; (load "setup-ruby.el")
 ;; (load "setup-rails.el")
-(load "setup-python.el")
+;; (load "setup-python.el")
+
 (load "setup-yaml.el")
 (load "setup-org.el")
 (load "setup-web.el")
@@ -70,6 +75,7 @@
 ;; (load "setup-circe.el")
 
 (load "setup-magit.el")
+(load "setup-black.el")
 
 ;; For email
                                         ;(load "setup-mu4e.el")
@@ -88,12 +94,12 @@
  :config
  (direnv-mode))
 
-(use-package pipenv
-  :hook (python-mode . pipenv-mode)
-  :init
-  (setq
-   pipenv-projectile-after-switch-function
-   #'pipenv-projectile-after-switch-extended))
+(use-package lsp-mode
+  :hook
+  ((python-mode . lsp)))
+
+(use-package lsp-ui
+  :commands lsp-ui-mode)
 
 ;; ==========================
 
@@ -112,9 +118,12 @@
    '(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults))
  '(elpy-test-runner 'elpy-test-pytest-runner)
  '(package-selected-packages
-   '(restclient racket-mode auctex-latexmk auctex org-mime org-msg org-mime flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi hlinum graphql-mode ghub flyspell-correct find-file-in-project exec-path-from-shell evil-org evil-collection elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
+   '(lsp-ui lsp-mode transient poetry wttrin yafolding python-black eyebrowse ace-window change-inner jinja2-mode pyenv-mode restclient racket-mode auctex-latexmk auctex org-mime org-msg org-mime flycheck-clj-kondo fira-code-mode kaolin-themes ample-zen-theme gruvbox-theme zenburn-theme yaml-mode web-mode virtualenvwrapper use-package undo-tree tt-mode transpose-frame tide tagedit smooth-scrolling smex skewer-mode selectrum-prescient scss-mode rjsx-mode request-deferred realgud rainbow-delimiters pytest py-yapf projectile prettier-js prettier pipenv pdf-tools paredit pallet npm-mode multi-web-mode monokai-theme markdown-mode magit-popup magit jupyter json-mode jedi hlinum graphql-mode ghub flyspell-correct find-file-in-project exec-path-from-shell evil-org evil-collection elpy ein doom-themes dockerfile-mode direnv company-quickhelp clojure-mode-extra-font-locking circe cider base16-theme aurora-config-mode ample-theme all-the-icons))
  '(safe-local-variable-values
-   '((cider-clojure-cli-aliases . "dev:test")
+   '((eval progn
+           (make-variable-buffer-local 'cider-jack-in-nrepl-middlewares)
+           (add-to-list 'cider-jack-in-nrepl-middlewares "shadow.cljs.devtools.server.nrepl/middleware"))
+     (cider-clojure-cli-aliases . "dev:test")
      (cider-clojure-cli-global-options . "-A:dev:test")
      (cider-clojure-cli-aliases . "dev")
      (cider-shadow-watched-builds "admin" "client" "organization")

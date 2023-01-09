@@ -1,8 +1,15 @@
+;;; setup-org -- Setting up org mode config
+
+;;; Commentary:
+
+;; Not much to add here
+
+;;; Code:
 (require 'org)
 
-(setq org-directory "~/Dropbox/org/")
-(setq org-default-notes-file "~/Dropbox/org/inbox.org")
-(setq org-agenda-files '("~/Dropbox/org/"))
+(setq org-directory "~/Library/CloudStorage/Dropbox/org/")
+(setq org-default-notes-file "~/Library/CloudStorage/Dropbox/org/inbox.org")
+(setq org-agenda-files '("~/Library/CloudStorage/Dropbox/org/"))
 
 ;; The following lines are always needed.  Choose your own keys.
 (global-set-key "\C-cl" 'org-store-link)
@@ -22,8 +29,20 @@
    (jupyter . t)))
 
 (setq org-capture-templates
-      '(("t" "todo" entry (file+headline "~/Dropbox/org/tasks.org" "Tasks")
+      '(("t" "todo" entry (file+headline "~/Library/CloudStorage/Dropbox/org/tasks.org" "Tasks")
          "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
 
-(setq org-todo-keywords
-      '((sequence "TODO" "WIP" "|" "DONE")))
+;; (setq org-todo-keywords
+;;       '((sequence "TODO" "|" "DONE")))
+
+(setq org-agenda-window-setup 'current-window)
+
+;; Allows refile to make sense to me
+(setq org-refile-targets '((nil :maxlevel . 9)
+                           (org-agenda-files :maxlevel . 9)))
+
+;; Refile in a single go
+(setq org-outline-path-complete-in-steps nil)
+
+; Show full paths for refiling
+(setq org-refile-use-outline-path t)
